@@ -1,49 +1,63 @@
-INSERT INTO person (person_id, name) VALUES
-(1, 'Laura Stevenson'),
-(2, 'Bob Jones'),
-(3, 'Charlie Brown'),
-(4, 'Jimmy Hendricks'),
-(5, 'Sydney Smith'),
-(6, 'Jordan Malone');
+-- Address
+INSERT INTO Address VALUES 
+(1, '123 Elm St', 101, 'Springfield', 'IL', '62704'),
+(2, '456 Oak Ave', NULL, 'Chicago', 'IL', '60616'),
+(3, '789 Pine Rd', 202, 'Naperville', 'IL', '60540'),
+(4, '321 Maple Ln', NULL, 'Peoria', 'IL', '61614');
 
-INSERT INTO phone (phone_id, person_id, area_code, number, can_recieve_sms) VALUES
-(1, 1, 123, 4567890, 1),
-(2, 2, 234, 5678901, 0),
-(3, 3, 345, 6789012, 1),
-(4, 3, 345, 6789013, 0);
-
-INSERT INTO address (address_id, person_id, street, zip) VALUES
-(1, 1, '123 Maple Street', 10001),
-(2, 2, '456 Oak Road', 20002),
-(3, 3, '789 Pine Avenue', 30003),
-(4, 4, '119 3rd Street', 84604),
-(5, 5, '121 3rd Street', 84604),
-(6, 6, '123 3rd Street', 84604);
-
-INSERT INTO zip (zip, city, state_two_letter_code) VALUES
-(10001, 'New York', 'NY'),
-(20002, 'Washington', 'DC'),
-(30003, 'Los Angeles', 'CA'),
-(84604, 'Provo', 'UT');
-
-INSERT INTO dog (dog_id, name, breed, birth_date) VALUES
-(1, 'Buddy', 'Golden Retriever', '2018-06-01'),
-(2, 'Max', 'Labrador Retriever', '2019-07-15'),
-(3, 'Bella', 'Poodle', '2017-08-30'),
-(4, 'Rufus', 'Collie', '2017-08-30'),
-(5, 'Rex', 'Corgi', '2017-08-30');
-
-INSERT INTO award (award_id, dog_id, event_date, award_name) VALUES
-(1, 1, '2021-09-20', 'Best in Show'),
-(2, 1, '2020-05-10', 'Top Agility'),
-(3, 3, '2021-11-05', 'Best Obedience');
-
-
-INSERT INTO person_dog (dog_id, person_id) VALUES
+-- Office
+INSERT INTO Office VALUES 
 (1, 1),
-(2, 1),
-(3, 2),
-(4, 5),
-(5, 5),
-(5, 1),
-(4, 1);
+(2, 4);
+-- Commission Rate
+INSERT INTO CommissionRate VALUES 
+(1, 0.10),
+(2, 0.40),
+(3, 1.0);
+
+-- Employees
+INSERT INTO Employee VALUES
+(1, 'Alice', 'Smith', 1, '1990-01-01', '2020-06-01', 60000, 1, 'HouseSalesRep', 2),
+(2, 'Bob', 'Jones', 2, '1985-05-23', '2019-04-15', 55000, 2, 'ColdCaller', 1),
+(3, 'Carol', 'Lee', 3, '1992-07-12', '2021-03-11', 50000, 1, 'OutsideSalesRep', 3),
+(4, 'David', 'Kim', 3, '1988-09-20', '2022-01-10', 58000, 2, 'HouseSalesRep', 2),
+(5, 'Eva', 'Brown', 4, '1995-03-30', '2023-05-18', 48000, 3, 'ColdCaller', 1);
+
+
+-- Rep Types
+INSERT INTO HouseSalesRep VALUES 
+(1, 50),
+(4, 40);
+INSERT INTO ColdCaller VALUES 
+(2, 35.5, 120, 20),
+(5, 40.0, 150, 30);
+INSERT INTO OutsideSalesRep VALUES 
+(3);
+
+-- Team and Manager
+INSERT INTO Team VALUES 
+(1, 'Special Ops Cold Callers'),
+(2, 'TIS House Sales Team');
+(3, 'TIS Outside Sales Team')
+INSERT INTO Manager VALUES 
+(1, 5),
+(2, 4),
+(3, 3);
+
+
+-- Lead and Bound Lead
+INSERT INTO Lead VALUES 
+(1, 2, 1, 'John Doe', 'Prospect Corp A', 2, 'Quote A'),
+(2, 5, 4, 'Mary Johnson', 'Prospect Corp B', 3, 'Quote B'),
+(3, 2, 3, 'Steve White', 'Prospect Corp C', 4, 'Quote C');
+INSERT INTO BoundLead VALUES 
+(1, 500.00, '2024-10-01'),
+(3, 750.00, '2024-11-15');
+
+-- Office assignment
+INSERT INTO EmployeeWorksAtOffice VALUES 
+(1, 1),
+(1, 2),
+(2, 3),
+(2, 4),
+(2, 5);

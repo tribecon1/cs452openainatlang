@@ -1,48 +1,109 @@
-create table person (
-    person_id integer primary key,
-    name varchar(20) not null
+CREATE TABLE Address (
+    ID SMALLINT PRIMARY KEY,
+    street VARCHAR(100),
+    unit_suite SMALLINT,
+    city VARCHAR(50),
+    stateCode CHAR(2),
+    zipCode CHAR(5)
 );
 
-create table phone (
-    phone_id integer primary key,
-    person_id integer not null,
-    area_code int not null,
-    number int not null,
-    can_recieve_sms tinyint not null,
-    foreign key (person_id) references person (person_id)
+CREATE TABLE Office (
+    ID SMALLINT PRIMARY KEY,
+    addressID SMALLINT,
+    FOREIGN KEY (addressID) REFERENCES Address(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create table address (
-    address_id integer primary key,
-    person_id integer not null,
-    street varchar(50),
-    zip integer not null
+CREATE TABLE CommissionRate (
+    ID SMALLINT PRIMARY KEY,
+    commissionRate DECIMAL
 );
 
-create table zip (
-    zip integer primary key,
-    city varchar(35),
-    state_two_letter_code char(2)
+CREATE TABLE Employee (
+    ID SMALLINT PRIMARY KEY,
+    firstName VARCHAR(30),
+    lastName VARCHAR(30),
+    homeAddressID SMALLINT,
+    birthDate DATE,
+    hireDate DATE,
+    baseSalary DECIMAL,
+    commissionID SMALLINT,
+    workType ENUM('HouseSalesRep', 'ColdCaller', 'OutsideSalesRep'),
+    officeID SMALLINT,
+    FOREIGN KEY (homeAddressID) REFERENCES Address(ID)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (commissionID) REFERENCES CommissionRate(ID)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (officeID) REFERENCES Office(ID)
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-create table dog (
-    dog_id integer primary key,
-    name varchar(35),
-    breed varchar(35),
-    birth_date date
+CREATE TABLE ColdCaller (
+    ccID BIGINT PRIMARY KEY,
+    hoursWorked DECIMAL,
+    totalCalls MEDIUMINT,
+    totalLeads SMALLINT,
+    FOREIGN KEY (ccID) REFERENCES Employee(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create table award (
-    award_id integer primary key,
-    dog_id integer not null,
-    event_date date,
-    award_name varchar(25) not null,
-    foreign key (dog_id) references dog (dog_id)
+CREATE TABLE HouseSalesRep (
+    hsrID SMALLINT PRIMARY KEY,
+    maxLeadLimit SMALLINT,
+    FOREIGN KEY (hsrID) REFERENCES Employee(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create table person_dog (
-    dog_id integer,
-    person_id integer,
-    foreign key (dog_id) references dog (dog_id),
-    foreign key (person_id) references person (person_id)
+CREATE TABLE OutsideSalesRep (
+    osrID BIGINT PRIMARY KEY,
+    FOREIGN KEY (osrID) REFERENCES Employee(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Team (
+    ID SMALLINT PRIMARY KEY,
+    teamName VARCHAR(50)
+);
+
+CREATE TABLE Manager (
+    teamID BIGINT PRIMARY KEY,
+    employeeID SMALLINT,
+    FOREIGN KEY (teamID) REFERENCES Team(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (employeeID) REFERENCES Employee(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Lead (
+    ID SMALLINT PRIMARY KEY,
+    FoundByID SMALLINT,
+    AssignedToID SMALLINT,
+    ProspectName VARCHAR(100),
+    ProspectOwner VARCHAR(100),
+    ProspectAddressID SMALLINT,
+    ProspectQuoteSheet LONGTEXT,
+    FOREIGN KEY (FoundByID) REFERENCES Employee(ID)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (AssignedToID) REFERENCES Employee(ID)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (ProspectAddressID) REFERENCES Address(ID)
+        ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE BoundLead (
+    leadID SMALLINT PRIMARY KEY,
+    bindAmt DECIMAL,
+    bindDate DATE,
+    FOREIGN KEY (leadID) REFERENCES Lead(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE EmployeeWorksAtOffice (
+    officeID SMALLINT,
+    employeeID SMALLINT,
+    PRIMARY KEY (officeID, employeeID),
+    FOREIGN KEY (officeID) REFERENCES Office(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (employeeID) REFERENCES Employee(ID)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
