@@ -1,6 +1,7 @@
 # Commercial Auto Insurance Brokerage
 
 My chosen project models data in tracking the different types of employees, their commissions, leads they are associated in finding, working, and binding, and the offices they work under.
+Repo Link: https://github.com/tribecon1/cs452openainatlang.git
 
 
 <img src="schema.png">
