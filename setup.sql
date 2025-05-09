@@ -1,35 +1,35 @@
 CREATE TABLE Address (
-    ID SMALLINT PRIMARY KEY,
-    street VARCHAR(100),
-    unit_suite SMALLINT,
-    city VARCHAR(50),
-    stateCode CHAR(2),
-    zipCode CHAR(5)
+    ID INTEGER PRIMARY KEY,
+    street TEXT,
+    unit_suite INTEGER,
+    city TEXT,
+    stateCode TEXT,
+    zipCode TEXT
 );
 
 CREATE TABLE Office (
-    ID SMALLINT PRIMARY KEY,
-    addressID SMALLINT,
+    ID INTEGER PRIMARY KEY,
+    addressID INTEGER,
     FOREIGN KEY (addressID) REFERENCES Address(ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE CommissionRate (
-    ID SMALLINT PRIMARY KEY,
-    commissionRate DECIMAL
+    ID INTEGER PRIMARY KEY,
+    commissionRate REAL
 );
 
 CREATE TABLE Employee (
-    ID SMALLINT PRIMARY KEY,
-    firstName VARCHAR(30),
-    lastName VARCHAR(30),
-    homeAddressID SMALLINT,
-    birthDate DATE,
-    hireDate DATE,
-    baseSalary DECIMAL,
-    commissionID SMALLINT,
-    workType ENUM('HouseSalesRep', 'ColdCaller', 'OutsideSalesRep'),
-    officeID SMALLINT,
+    ID INTEGER PRIMARY KEY,
+    firstName TEXT,
+    lastName TEXT,
+    homeAddressID INTEGER,
+    birthDate TEXT,
+    hireDate TEXT,
+    baseSalary REAL,
+    commissionID INTEGER,
+    workType TEXT CHECK(workType IN ('HouseSalesRep', 'ColdCaller', 'OutsideSalesRep')),
+    officeID INTEGER,
     FOREIGN KEY (homeAddressID) REFERENCES Address(ID)
         ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (commissionID) REFERENCES CommissionRate(ID)
@@ -39,49 +39,49 @@ CREATE TABLE Employee (
 );
 
 CREATE TABLE ColdCaller (
-    ccID BIGINT PRIMARY KEY,
-    hoursWorked DECIMAL,
-    totalCalls MEDIUMINT,
-    totalLeads SMALLINT,
-    FOREIGN KEY (ccID) REFERENCES Employee(ID)
+    ID INTEGER PRIMARY KEY,
+    hoursWorked REAL,
+    totalCalls INTEGER,
+    totalLeads INTEGER,
+    FOREIGN KEY (ID) REFERENCES Employee(ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE HouseSalesRep (
-    hsrID SMALLINT PRIMARY KEY,
-    maxLeadLimit SMALLINT,
-    FOREIGN KEY (hsrID) REFERENCES Employee(ID)
+    ID INTEGER PRIMARY KEY,
+    maxLeadLimit INTEGER,
+    FOREIGN KEY (ID) REFERENCES Employee(ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE OutsideSalesRep (
-    osrID BIGINT PRIMARY KEY,
-    FOREIGN KEY (osrID) REFERENCES Employee(ID)
+    ID INTEGER PRIMARY KEY,
+    FOREIGN KEY (ID) REFERENCES Employee(ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Team (
-    ID SMALLINT PRIMARY KEY,
-    teamName VARCHAR(50)
+    ID INTEGER PRIMARY KEY,
+    teamName TEXT
 );
 
 CREATE TABLE Manager (
-    teamID BIGINT PRIMARY KEY,
-    employeeID SMALLINT,
-    FOREIGN KEY (teamID) REFERENCES Team(ID)
+    ID INTEGER PRIMARY KEY,
+    employeeID INTEGER,
+    FOREIGN KEY (ID) REFERENCES Team(ID)
         ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (employeeID) REFERENCES Employee(ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Lead (
-    ID SMALLINT PRIMARY KEY,
-    FoundByID SMALLINT,
-    AssignedToID SMALLINT,
-    ProspectName VARCHAR(100),
-    ProspectOwner VARCHAR(100),
-    ProspectAddressID SMALLINT,
-    ProspectQuoteSheet LONGTEXT,
+    ID INTEGER PRIMARY KEY,
+    FoundByID INTEGER,
+    AssignedToID INTEGER,
+    ProspectName TEXT,
+    ProspectOwner TEXT,
+    ProspectAddressID INTEGER,
+    ProspectQuoteSheet TEXT,
     FOREIGN KEY (FoundByID) REFERENCES Employee(ID)
         ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (AssignedToID) REFERENCES Employee(ID)
@@ -91,16 +91,16 @@ CREATE TABLE Lead (
 );
 
 CREATE TABLE BoundLead (
-    leadID SMALLINT PRIMARY KEY,
-    bindAmt DECIMAL,
-    bindDate DATE,
-    FOREIGN KEY (leadID) REFERENCES Lead(ID)
+    ID INTEGER PRIMARY KEY,
+    bindAmt REAL,
+    bindDate TEXT,
+    FOREIGN KEY (ID) REFERENCES Lead(ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE EmployeeWorksAtOffice (
-    officeID SMALLINT,
-    employeeID SMALLINT,
+    officeID INTEGER,
+    employeeID INTEGER,
     PRIMARY KEY (officeID, employeeID),
     FOREIGN KEY (officeID) REFERENCES Office(ID)
         ON DELETE CASCADE ON UPDATE CASCADE,
